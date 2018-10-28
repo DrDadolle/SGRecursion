@@ -17,7 +17,7 @@ public class PlayerController : NetworkBehaviour
 
     // For timeMachine
     public TimeMachine tm;
-    public bool canUpgradeTimeMachine = false;
+    public bool isNearTimeMachine = false;
     public int useableItemID;
 
     private Inventory inv;
@@ -63,14 +63,23 @@ public class PlayerController : NetworkBehaviour
             inv.AddItem(buyableItem.id);
         }
 
-        // Use Item
-        // it is based on buyable id
-        if (Input.GetKeyDown(KeyCode.J) && canUpgradeTimeMachine)
+        // Time Machine
+        if (isNearTimeMachine)
         {
-            inv.RemoveItem(inv.GetIndexOfItemById(useableItemID));
-            CmdUpgradeTimeMachine();
-            canUpgradeTimeMachine = false;
+            // Upgrade the TM
+            if (tm.canBeUpgraded && Input.GetKeyDown(KeyCode.T) && useableItemID != -1)
+            {
+                inv.RemoveItem(inv.GetIndexOfItemById(useableItemID));
+                useableItemID = -1;
+                CmdUpgradeTimeMachine();
+            } 
 
+            // Use the TM
+            if (tm.canBeUsed && Input.GetKeyDown(KeyCode.E))
+            {
+                //TODO : send DMail
+                Debug.Log("Sending D-mail");
+            }
         }
 
         // Remove object from inventory

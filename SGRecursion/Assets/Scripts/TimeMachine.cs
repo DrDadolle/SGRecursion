@@ -8,7 +8,13 @@ public class TimeMachine : NetworkBehaviour {
     public Item[] possibleUseableItems = new Item[2];
 
     [SyncVar]
-    public int requiredItemIdToUse;
+    public int requiredItemIdToUse = -1;
+
+    [SyncVar]
+    public bool canBeUpgraded;
+
+    [SyncVar]
+    public bool canBeUsed;
 
     [SyncVar]
     public int TimeMachineLevel = 0;
@@ -22,11 +28,15 @@ public class TimeMachine : NetworkBehaviour {
     private void Awake()
     {
         requiredItemIdToUse = GetRandomObject().id;
+        canBeUpgraded = true;
     }
 
     public void UpgradeMachine()
     {
         TimeMachineLevel = TimeMachineLevel + 1;
+        requiredItemIdToUse = -1;
+        canBeUsed = true;
+        canBeUpgraded = false;
     }
 
 }

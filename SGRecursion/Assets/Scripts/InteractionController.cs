@@ -22,12 +22,12 @@ public class InteractionController : MonoBehaviour
         } else if (other.gameObject.tag.Equals("TimeMachine"))
         {
             Debug.Log("Entering the time machine");
+            playerController.isNearTimeMachine = true;
             TimeMachine tm = other.gameObject.GetComponent<TimeMachine>();
             
             if (playerController.GetComponent<Inventory>().HasItemById(tm.requiredItemIdToUse))
             {
-                playerController.useableItemID = tm.requiredItemIdToUse; 
-                playerController.canUpgradeTimeMachine = true;
+                playerController.useableItemID = tm.requiredItemIdToUse;    
             }
         }
     }
@@ -42,7 +42,7 @@ public class InteractionController : MonoBehaviour
         else if (other.gameObject.tag.Equals("TimeMachine"))
         {
             Debug.Log("Exiting the time machine");
-            playerController.canUpgradeTimeMachine = false;
+            playerController.isNearTimeMachine = false;
         }
     }
 }
