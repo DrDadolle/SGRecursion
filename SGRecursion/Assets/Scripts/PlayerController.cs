@@ -9,7 +9,8 @@ public class PlayerController : NetworkBehaviour
 
     public Transform camPlace;
 
-    public SyncListInt itemsId;
+    public bool canBuyItem = false;
+    public Item buyableItem;
 
 
     public override void OnStartLocalPlayer()
@@ -22,12 +23,6 @@ public class PlayerController : NetworkBehaviour
 
     }
 
-    private void Awake()
-    {
-        itemsId = new SyncListInt();
-    }
-
-
     void Update()
     {
         if (!isLocalPlayer)
@@ -35,8 +30,8 @@ public class PlayerController : NetworkBehaviour
             return;
         }
 
-        var x = Input.GetAxis("Horizontal") * Time.deltaTime * 150.0f;
-        var z = Input.GetAxis("Vertical") * Time.deltaTime * 3.0f;
+        var x = Input.GetAxis("Horizontal") * Time.deltaTime * 200.0f;
+        var z = Input.GetAxis("Vertical") * Time.deltaTime * 10.0f;
 
         transform.Rotate(0, x, 0);
         transform.Translate(0, 0, z);
@@ -48,15 +43,15 @@ public class PlayerController : NetworkBehaviour
         }
 
         // Test Inventory
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.I) && canBuyItem)
         {
-            CmdAddItem(0);
+            CmdAddItem(buyableItem.id);
         }
 
         // Test Inventory
         if (Input.GetKeyDown(KeyCode.J))
         {
-            CmdRemoveItem(0);
+            CmdRemoveItem(buyableItem.id);
         }
     }
 
@@ -80,18 +75,15 @@ public class PlayerController : NetworkBehaviour
     }
 
 
-    //[Command]
+    [Command]
     void CmdAddItem(int itemID)
     {
-
-        itemsId.Add(itemID);
         gameObject.GetComponentInChildren<Inventory>().AddItem(itemID);
     }
 
-    //[Command]
+    [Command]
     void CmdRemoveItem(int itemID)
     {
-        itemsId.Remove(itemID);
         gameObject.GetComponentInChildren<Inventory>().RemoveItem(itemID);
     }
 }

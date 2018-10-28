@@ -127,6 +127,8 @@ GameObject:
   - component: {fileID: 114523120174235276}
   - component: {fileID: 114651371600922422}
   - component: {fileID: 114357751871797950}
+  - component: {fileID: 114875475708680330}
+  - component: {fileID: 114168078635501188}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -403,6 +405,21 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114168078635501188
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1912466691651204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ec9ae343d5e0f641be9919d84f270fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items:
+  - {fileID: 0}
+  - {fileID: 0}
+  itemManager: {fileID: 0}
 --- !u!114 &114279521524479614
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -486,6 +503,8 @@ MonoBehaviour:
     type: 2}
   bulletSpawn: {fileID: 4298668763568658}
   camPlace: {fileID: 4808609674340260}
+  canBuyItem: 0
+  buyableItem: {fileID: 0}
 --- !u!114 &114631397335716498
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -545,6 +564,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114875475708680330
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1912466691651204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11956d59d224da14fb1d07fbd181514f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &136756670612953534
 CapsuleCollider:
   m_ObjectHideFlags: 1

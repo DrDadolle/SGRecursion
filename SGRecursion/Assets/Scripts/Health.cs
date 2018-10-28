@@ -26,10 +26,9 @@ public class Health : NetworkBehaviour
         deathCountText.text = "Death : " + deathCount;
     }
 
+    [Server]
     public void TakeDamage(int amount)
     {
-        if (!isServer)
-            return;
 
         currentHealth -= amount;
         if (currentHealth <= 0)

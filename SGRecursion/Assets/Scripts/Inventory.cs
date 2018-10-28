@@ -1,16 +1,27 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class Inventory : MonoBehaviour
+public class Inventory : NetworkBehaviour
 {
     public Item[] items = new Item[numItemSlots];
+
     public const int numItemSlots = 2;
 
     public ItemManager itemManager;
 
+    private GameObject[] itemSlots = new GameObject[numItemSlots];
+
+    private void Awake()
+    {
+        itemManager = GameObject.FindGameObjectWithTag("Manager").GetComponent<ItemManager>();
+        itemSlots = GameObject.FindGameObjectsWithTag("ItemSlot");
+    }
+
     
     public void AddItem(int itemID)
     {
+
         Item itemToAdd = itemManager.allExistingItems[itemID];
 
         if(itemToAdd == null)
@@ -26,8 +37,11 @@ public class Inventory : MonoBehaviour
                 items[i] = itemToAdd;
 
                 // We need to add the display to the inventory
-                GameObject itemSlot = gameObject.transform.GetChild(i).gameObject.transform.Find("Item Image").gameObject;
+                GameObject itemSlot = itemSlots[i].transform.Find("Item Image").gameObject;
                 itemSlot.SetActive(true);
+                Debug.Log(itemSlot);
+                Debug.Log(itemSlot.GetComponent<Image>());
+                Debug.Log(itemSlot.GetComponent<Image>().sprite);
                 itemSlot.GetComponent<Image>().sprite = itemToAdd.sprite;
 
                 return;
@@ -53,7 +67,7 @@ public class Inventory : MonoBehaviour
                 items[i] = null;
 
                 // We need to add the display to the inventory
-                GameObject itemSlot = gameObject.transform.GetChild(i).gameObject.transform.Find("Item Image").gameObject;
+                GameObject itemSlot = itemSlots[i].transform.Find("Item Image").gameObject;
                 itemSlot.SetActive(false);
                 itemSlot.GetComponent<Image>().sprite = null;
 
