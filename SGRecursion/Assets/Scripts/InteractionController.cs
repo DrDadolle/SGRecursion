@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class InteractionController : MonoBehaviour
 {
@@ -13,36 +14,54 @@ public class InteractionController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag.Equals("Shop")) {
 
-            Debug.Log("Can press I to get an item !");
-            playerController.canBuyItem = true;
-            playerController.buyableItem = other.gameObject.GetComponent<SellingItems>().GetRandomObject();
-
-        } else if (other.gameObject.tag.Equals("TimeMachine"))
+        switch (other.gameObject.tag)
         {
-            Debug.Log("Entering the time machine");
-            playerController.isNearTimeMachine = true;
-            TimeMachine tm = other.gameObject.GetComponent<TimeMachine>();
-            
-            if (playerController.GetComponent<Inventory>().HasItemById(tm.requiredItemIdToUse))
-            {
-                playerController.useableItemID = tm.requiredItemIdToUse;    
-            }
+            case "Shop":
+                Debug.Log("Can press I to get an item !");
+                playerController.canBuyItem = true;
+                playerController.buyableItem = other.gameObject.GetComponent<SellingItems>().GetRandomObject();
+                break;
+            case "TimeMachine":
+                Debug.Log("Entering the time machine");
+                playerController.isNearTimeMachine = true;
+                TimeMachine tm = other.gameObject.GetComponent<TimeMachine>();
+
+                if (playerController.GetComponent<Inventory>().HasItemById(tm.requiredItemIdToUse))
+                {
+                    playerController.useableItemID = tm.requiredItemIdToUse;
+                }
+                break;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        switch (other.gameObject.tag)
+        {
+            case "PickupObject":
+                if (Input.GetKeyDown(KeyCode.E) && playerController.inv.HasFreeSpace())
+                {
+                    playerController.inv.AddItem(other.gameObject);
+                    playerController.CmdDeleteObject(other.gameObject.GetComponent<NetworkIdentity>().netId);
+                }
+                break;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag.Equals("Shop"))
+        switch (other.gameObject.tag)
         {
-            Debug.Log("exiting the shop");
-            gameObject.GetComponent<PlayerController>().canBuyItem = false;
-        }
-        else if (other.gameObject.tag.Equals("TimeMachine"))
-        {
-            Debug.Log("Exiting the time machine");
-            playerController.isNearTimeMachine = false;
+            case "Shop":
+                Debug.Log("exiting the shop");
+                gameObject.GetComponent<PlayerController>().canBuyItem = false;
+                break;
+            case "TimeMachine":
+                Debug.Log("Exiting the time machine");
+                playerController.isNearTimeMachine = false;
+                break;
+
         }
     }
 }

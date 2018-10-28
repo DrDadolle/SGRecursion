@@ -73,6 +73,33 @@ public class Inventory : NetworkBehaviour
         return count;
     }
 
+    // Utility Method
+    public bool HasFreeSpace()
+    {
+        foreach(Item it in items)
+        {
+            if(it == null)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Utility Method
+    public bool AddItem(GameObject go)
+    {
+        foreach(Item it in itemManager.allExistingItems.Values)
+        {
+            if ((it.itemObject.name + "(Clone)").Equals(go.name))
+            {
+                AddItem(it.id);
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void AddItem(int itemID)
     {
         Item itemToAdd = itemManager.allExistingItems[itemID];
@@ -154,9 +181,6 @@ public class Inventory : NetworkBehaviour
 
         // Spawn the item dropped on the Clients
         itemToDrop.transform.parent = null;
-
-        // Add velocity to the item
-        itemToDrop.GetComponent<Rigidbody>().velocity = itemToDrop.transform.forward;
 
         NetworkServer.Spawn(itemToDrop);
     }

@@ -10,6 +10,7 @@ TagManager:
   - Shop
   - Manager
   - TimeMachine
+  - PickupObject
   layers:
   - Default
   - TransparentFX

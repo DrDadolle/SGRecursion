@@ -20,7 +20,7 @@ public class PlayerController : NetworkBehaviour
     public bool isNearTimeMachine = false;
     public int useableItemID;
 
-    private Inventory inv;
+    public Inventory inv;
 
     public override void OnStartLocalPlayer()
     {
@@ -57,7 +57,7 @@ public class PlayerController : NetworkBehaviour
             CmdFire();
         }
 
-        // Test Inventory
+        // GrabItem Inventory
         if (Input.GetKeyDown(KeyCode.I) && canBuyItem)
         {
             inv.AddItem(buyableItem.id);
@@ -75,24 +75,26 @@ public class PlayerController : NetworkBehaviour
             } 
 
             // Use the TM
-            if (tm.canBeUsed && Input.GetKeyDown(KeyCode.E))
+            if (tm.canBeUsed && Input.GetKeyDown(KeyCode.Y))
             {
                 //TODO : send DMail
                 Debug.Log("Sending D-mail");
             }
         }
 
-        // Remove object from inventory
+        // Remove object from inventory slot 1
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             inv.DropItem(0);
         }
 
-        // Remove object from inventory
+        // Remove object from inventory slot 2
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             inv.DropItem(1);
         }
+
+
     }
 
     [Command]
@@ -121,6 +123,13 @@ public class PlayerController : NetworkBehaviour
         Debug.Log("TM UPGRADE");
     }
 
+    [Command]
+    public void CmdDeleteObject(NetworkInstanceId objectId)
+    {
+        var myObject = NetworkServer.FindLocalObject(objectId);
+        NetworkServer.Destroy(myObject);
+    }
 
 
-}
+
+    }

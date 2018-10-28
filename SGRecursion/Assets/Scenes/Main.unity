@@ -214,6 +214,8 @@ MonoBehaviour:
   possibleUseableItems:
   - {fileID: 11400000, guid: 00d4943626dbe124483e08a8ecd4a5a8, type: 2}
   requiredItemIdToUse: 0
+  canBeUpgraded: 0
+  canBeUsed: 0
   TimeMachineLevel: 0
 --- !u!114 &53411644
 MonoBehaviour:
