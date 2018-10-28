@@ -11,6 +11,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf8786550afeeb944b0e068a99890d93, type: 3}
   m_Name: banana
   m_EditorClassIdentifier: 
-  itemObject: {fileID: 1130346318535874, guid: e1f86c402aaa42646920f65653b0e47a, type: 2}
+  itemObject: {fileID: 1908072467223278, guid: 1e361eb7b9b7895439cc1828e6328052, type: 2}
   sprite: {fileID: 21300000, guid: 142f83396ab84da46a5352c792f4cade, type: 3}
   id: 1

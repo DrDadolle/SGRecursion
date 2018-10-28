@@ -12,6 +12,7 @@ public class PlayerController : NetworkBehaviour
     public bool canBuyItem = false;
     public Item buyableItem;
 
+    private Inventory inv;
 
     public override void OnStartLocalPlayer()
     {
@@ -21,6 +22,7 @@ public class PlayerController : NetworkBehaviour
        GameObject hudPlayer = GameObject.FindGameObjectWithTag("HUDPlayer");
        hudPlayer.transform.parent = this.transform;
 
+        inv = gameObject.GetComponentInChildren<Inventory>();
     }
 
     void Update()
@@ -45,13 +47,21 @@ public class PlayerController : NetworkBehaviour
         // Test Inventory
         if (Input.GetKeyDown(KeyCode.I) && canBuyItem)
         {
-            CmdAddItem(buyableItem.id);
+            inv.AddItem(buyableItem.id);
         }
 
         // Test Inventory
+        // TODO : it is based on buyable id
         if (Input.GetKeyDown(KeyCode.J))
         {
-            CmdRemoveItem(buyableItem.id);
+            inv.RemoveItem(buyableItem.id);
+        }
+
+        // Remove object from inventory
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            CmdFire();
+            inv.DropItem(buyableItem.id);
         }
     }
 
@@ -75,15 +85,5 @@ public class PlayerController : NetworkBehaviour
     }
 
 
-    [Command]
-    void CmdAddItem(int itemID)
-    {
-        gameObject.GetComponentInChildren<Inventory>().AddItem(itemID);
-    }
 
-    [Command]
-    void CmdRemoveItem(int itemID)
-    {
-        gameObject.GetComponentInChildren<Inventory>().RemoveItem(itemID);
-    }
 }
