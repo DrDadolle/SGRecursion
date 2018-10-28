@@ -9,6 +9,7 @@ TagManager:
   - ItemSlot
   - Shop
   - Manager
+  - TimeMachine
   layers:
   - Default
   - TransparentFX

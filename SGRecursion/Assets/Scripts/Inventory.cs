@@ -36,6 +36,43 @@ public class Inventory : NetworkBehaviour
     }
 
 
+    // Utility method
+    public bool HasItemById(int itemId)
+    {
+        foreach (Item it in items)
+        {
+            if (it != null && it.id == itemId)
+            {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    // Utility method
+    public Item GetItemById(int itemId)
+    {
+        return itemManager.allExistingItems[itemId];
+
+    }
+
+    // Utility method
+    public int GetIndexOfItemById(int itemId)
+    {
+        int count = -1;
+        foreach(Item it in items)
+        {
+            count++;
+            if (it != null && it.id == itemId)
+            {
+                break; 
+            }
+        }
+
+        return count;
+    }
+
     public void AddItem(int itemID)
     {
         Item itemToAdd = itemManager.allExistingItems[itemID];
@@ -67,20 +104,20 @@ public class Inventory : NetworkBehaviour
 
     }
 
-    public void DropItem(int itemID)
+    // Drop the number index item
+    public void DropItem(int index)
     {
-        // Security check useless
-        if (!listOfItemsID.Contains(itemID))
-        {
-            return;
-        }
-
-
-        Item itemToRemove = itemManager.allExistingItems[itemID];
+        Item itemToRemove = items[index];
 
         if (itemToRemove == null)
         {
             Debug.Log("Invalid id for item");
+            return;
+        }
+
+        // Security check useless
+        if (!listOfItemsID.Contains(itemToRemove.id))
+        {
             return;
         }
 
@@ -94,15 +131,10 @@ public class Inventory : NetworkBehaviour
                 itemSlot.SetActive(false);
                 itemSlot.GetComponent<Image>().sprite = null;
 
-                Debug.Log("TRYING TO DROP!");
-                Debug.Log(itemToRemove);
-                Debug.Log(itemToRemove.id);
-                Debug.Log(itemToRemove.sprite);
-                Debug.Log(itemToRemove.itemObject);
-                CmdDropItem(itemID);
+                CmdDropItem(itemToRemove.id);
 
                 // to synchronize with the server
-                CmdTellServerIRemovedAnItem(itemID);
+                CmdTellServerIRemovedAnItem(itemToRemove.id);
 
                 items[i] = null;
 
@@ -129,13 +161,20 @@ public class Inventory : NetworkBehaviour
         NetworkServer.Spawn(itemToDrop);
     }
 
-    public void RemoveItem(int itemID)
+    // Drop the number index item
+    public void RemoveItem(int index)
     {
-        Item itemToRemove = itemManager.allExistingItems[itemID];
+        Item itemToRemove = items[index];
 
         if (itemToRemove == null)
         {
             Debug.Log("Invalid id for item");
+            return;
+        }
+
+        // Security check useless
+        if (!listOfItemsID.Contains(itemToRemove.id))
+        {
             return;
         }
 
@@ -151,10 +190,11 @@ public class Inventory : NetworkBehaviour
                 itemSlot.GetComponent<Image>().sprite = null;
 
                 // to synchronize with the server
-                CmdTellServerIRemovedAnItem(itemID);
+                CmdTellServerIRemovedAnItem(itemToRemove.id);
 
                 return;
             }
         }
     }
+
 }

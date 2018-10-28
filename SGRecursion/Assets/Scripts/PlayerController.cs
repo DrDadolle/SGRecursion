@@ -3,14 +3,22 @@ using UnityEngine.Networking;
 
 public class PlayerController : NetworkBehaviour
 {
-
+    // For shooting
     public GameObject bulletPrefab;
     public Transform bulletSpawn;
 
+
+    // Camera
     public Transform camPlace;
 
+    // For shopping
     public bool canBuyItem = false;
     public Item buyableItem;
+
+    // For timeMachine
+    public TimeMachine tm;
+    public bool canUpgradeTimeMachine = false;
+    public int useableItemID;
 
     private Inventory inv;
 
@@ -23,6 +31,11 @@ public class PlayerController : NetworkBehaviour
        hudPlayer.transform.parent = this.transform;
 
         inv = gameObject.GetComponentInChildren<Inventory>();
+    }
+
+    private void Start()
+    {
+        tm = GameObject.FindGameObjectWithTag("TimeMachine").GetComponent<TimeMachine>();
     }
 
     void Update()
@@ -50,18 +63,26 @@ public class PlayerController : NetworkBehaviour
             inv.AddItem(buyableItem.id);
         }
 
-        // Test Inventory
-        // TODO : it is based on buyable id
-        if (Input.GetKeyDown(KeyCode.J))
+        // Use Item
+        // it is based on buyable id
+        if (Input.GetKeyDown(KeyCode.J) && canUpgradeTimeMachine)
         {
-            inv.RemoveItem(buyableItem.id);
+            inv.RemoveItem(inv.GetIndexOfItemById(useableItemID));
+            CmdUpgradeTimeMachine();
+            canUpgradeTimeMachine = false;
+
         }
 
         // Remove object from inventory
-        if (Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            CmdFire();
-            inv.DropItem(buyableItem.id);
+            inv.DropItem(0);
+        }
+
+        // Remove object from inventory
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            inv.DropItem(1);
         }
     }
 
@@ -82,6 +103,13 @@ public class PlayerController : NetworkBehaviour
 
         // Destroy the bullet after 2 seconds
         Destroy(bullet, 2.0f);
+    }
+
+    [Command]
+    public void CmdUpgradeTimeMachine()
+    {
+        tm.TimeMachineLevel = tm.TimeMachineLevel + 1;
+        Debug.Log("TM UPGRADE");
     }
 
 
