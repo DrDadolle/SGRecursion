@@ -108,7 +108,7 @@ public class PlayerController : NetworkBehaviour
     [Command]
     public void CmdUpgradeTimeMachine()
     {
-        tm.TimeMachineLevel = tm.TimeMachineLevel + 1;
+        tm.UpgradeMachine();
         Debug.Log("TM UPGRADE");
     }
 

@@ -24,4 +24,9 @@ public class TimeMachine : NetworkBehaviour {
         requiredItemIdToUse = GetRandomObject().id;
     }
 
+    public void UpgradeMachine()
+    {
+        TimeMachineLevel = TimeMachineLevel + 1;
+    }
+
 }

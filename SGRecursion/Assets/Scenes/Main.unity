@@ -125,6 +125,7 @@ GameObject:
   - component: {fileID: 53411640}
   - component: {fileID: 53411639}
   - component: {fileID: 53411643}
+  - component: {fileID: 53411644}
   m_Layer: 0
   m_Name: TimeMachine
   m_TagString: TimeMachine
@@ -214,6 +215,38 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 00d4943626dbe124483e08a8ecd4a5a8, type: 2}
   requiredItemIdToUse: 0
   TimeMachineLevel: 0
+--- !u!114 &53411644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 53411638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 0
+    i1: 0
+    i2: 0
+    i3: 0
+    i4: 0
+    i5: 0
+    i6: 0
+    i7: 0
+    i8: 0
+    i9: 0
+    i10: 0
+    i11: 0
+    i12: 0
+    i13: 0
+    i14: 0
+    i15: 0
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!1 &134981683
 GameObject:
   m_ObjectHideFlags: 0
@@ -1039,7 +1072,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemsToSell:
   - {fileID: 11400000, guid: 00d4943626dbe124483e08a8ecd4a5a8, type: 2}
-  - {fileID: 11400000, guid: feccda68a57c1a949843e4f81e443e3f, type: 2}
+  - {fileID: 11400000, guid: 00d4943626dbe124483e08a8ecd4a5a8, type: 2}
 --- !u!1 &1217899420
 GameObject:
   m_ObjectHideFlags: 0
