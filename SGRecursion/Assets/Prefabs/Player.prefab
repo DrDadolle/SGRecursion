@@ -130,6 +130,8 @@ GameObject:
   - component: {fileID: 114875475708680330}
   - component: {fileID: 114168078635501188}
   - component: {fileID: 54958613918539658}
+  - component: {fileID: 114005649044772048}
+  - component: {fileID: 114759845496278870}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -216,7 +218,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1912466691651204}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.8404696, y: -0.05, z: -2.092342}
+  m_LocalPosition: {x: 0.67733645, y: 0.5, z: 0.91111135}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4384161049102470}
@@ -407,6 +409,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114005649044772048
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1912466691651204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe668888163f2474ca1e39ae23863717, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
 --- !u!114 &114025598983295408
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -462,10 +476,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropPoint: {fileID: 4829483343193972}
-  items:
+  allItemSlots:
   - {fileID: 0}
   - {fileID: 0}
-  itemManager: {fileID: 0}
 --- !u!114 &114279521524479614
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -548,7 +561,6 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1627988345333688, guid: 371b166d6f39cc24c9014aba2d5c5548,
     type: 2}
   bulletSpawn: {fileID: 4298668763568658}
-  camPlace: {fileID: 4808609674340260}
   canBuyItem: 0
   buyableItem: {fileID: 0}
   tm: {fileID: 0}
@@ -614,6 +626,19 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114759845496278870
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1912466691651204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfac965dd0a78004b9606bb5961c4703, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  componentsToDisable: []
+  camPlace: {fileID: 4808609674340260}
 --- !u!114 &114875475708680330
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -8,9 +8,6 @@ public class PlayerController : NetworkBehaviour
     public Transform bulletSpawn;
 
 
-    // Camera
-    public Transform camPlace;
-
     // For shopping
     public bool canBuyItem = false;
     public Item buyableItem;
@@ -22,21 +19,12 @@ public class PlayerController : NetworkBehaviour
 
     public Inventory inv;
 
-    public override void OnStartLocalPlayer()
-    {
-       GetComponent<MeshRenderer>().material.color = Color.blue;
-       Camera.main.transform.parent = camPlace;
-       Camera.main.transform.position = camPlace.position;
-       GameObject hudPlayer = GameObject.FindGameObjectWithTag("HUDPlayer");
-       hudPlayer.transform.parent = this.transform;
-
-        inv = gameObject.GetComponentInChildren<Inventory>();
-    }
-
     private void Start()
     {
         tm = GameObject.FindGameObjectWithTag("TimeMachine").GetComponent<TimeMachine>();
+        inv = gameObject.GetComponentInChildren<Inventory>();
     }
+
 
     void Update()
     {

@@ -1673,6 +1673,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1993684757}
   - component: {fileID: 1993684756}
+  - component: {fileID: 1993684758}
   m_Layer: 5
   m_Name: Manager
   m_TagString: Manager
@@ -1712,6 +1713,17 @@ RectTransform:
   m_AnchoredPosition: {x: 677, y: 116.66669}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1993684758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1993684755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e4d6fefbce71a4b8eab17a0c7c6798, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2035001352
 GameObject:
   m_ObjectHideFlags: 0
