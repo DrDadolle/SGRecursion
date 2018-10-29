@@ -8,217 +8,138 @@ public class Inventory : NetworkBehaviour
     public SyncListInt listOfItemsID = new SyncListInt();
 
     public Transform dropPoint;
-
-
-    public Item[] items = new Item[numItemSlots];
     public const int numItemSlots = 2;
 
-    public ItemManager itemManager;
-
+    // Slots
     private GameObject[] itemSlots = new GameObject[numItemSlots];
+    public ItemSlot[] allItemSlots = new ItemSlot[numItemSlots];
 
     private void Awake()
     {
-        itemManager = GameObject.FindGameObjectWithTag("Manager").GetComponent<ItemManager>();
         itemSlots = GameObject.FindGameObjectsWithTag("ItemSlot");
+        allItemSlots[0] = itemSlots[0].GetComponent<ItemSlot>();
+        allItemSlots[1] = itemSlots[1].GetComponent<ItemSlot>();
+    }
+
+    public void AddItemAction(int itemID)
+    {
+        if (allItemSlots[0].theItem == null)
+        {
+            allItemSlots[0].theItem = ItemManager.getItemById(itemID);
+        }
+        else if (allItemSlots[1].theItem == null)
+        {
+            allItemSlots[1].theItem = ItemManager.getItemById(itemID);
+        }
+        else
+        {
+            return;
+        }
+
+        CmdTellServerIGotANewItem(itemID);
+        UpdateItemSlots();
     }
 
     [Command]
-    void CmdTellServerIGotANewItem(int itemID)
+    private void CmdTellServerIGotANewItem(int itemID)
     {
         listOfItemsID.Add(itemID);
     }
 
-    [Command]
-    void CmdTellServerIRemovedAnItem(int itemID)
+    public void RemoveItemAction(int itemID)
     {
+        if (listOfItemsID.Count > 0)
+        {
+            // CHECKS
+            if (allItemSlots[0].theItem != null && allItemSlots[0].theItem.id == itemID)
+            {
+                allItemSlots[0].theItem = null;
+            }
+            else if (allItemSlots[1].theItem != null && allItemSlots[1].theItem.id == itemID)
+            {
+                allItemSlots[1].theItem = null;
+            }
+            else
+            {
+                return;
+            }
+        }
+        CmdTellServerIRemovedAnItem(itemID);
+        UpdateItemSlots();
+    }
+
+    [Command]
+    private void CmdTellServerIRemovedAnItem(int itemID)
+    {
+
         listOfItemsID.Remove(itemID);
     }
 
 
-    // Utility method
-    public bool HasItemById(int itemId)
+    public void DropItemAction(int index)
     {
-        foreach (Item it in items)
+        if (listOfItemsID.Count > 0)
         {
-            if (it != null && it.id == itemId)
+            // CHECKS
+            if (allItemSlots[index].theItem != null)
             {
-                return true;
-            }
-        }
-        return false;
-
-    }
-
-    // Utility method
-    public Item GetItemById(int itemId)
-    {
-        return itemManager.allExistingItems[itemId];
-
-    }
-
-    // Utility method
-    public int GetIndexOfItemById(int itemId)
-    {
-        int count = -1;
-        foreach(Item it in items)
-        {
-            count++;
-            if (it != null && it.id == itemId)
-            {
-                break; 
-            }
-        }
-
-        return count;
-    }
-
-    // Utility Method
-    public bool HasFreeSpace()
-    {
-        foreach(Item it in items)
-        {
-            if(it == null)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // Utility Method
-    public bool AddItem(GameObject go)
-    {
-        foreach(Item it in itemManager.allExistingItems.Values)
-        {
-            if ((it.itemObject.name + "(Clone)").Equals(go.name))
-            {
-                AddItem(it.id);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void AddItem(int itemID)
-    {
-        Item itemToAdd = itemManager.allExistingItems[itemID];
-
-        if(itemToAdd == null)
-        {
-            Debug.Log("Invalid id for item");
-            return;
-        }
-
-        for (int i = 0; i < items.Length; i++)
-        {
-            if (items[i] == null)
-            {
-                items[i] = itemToAdd;
-
-                // We need to add the display to the inventory
-                GameObject itemSlot = itemSlots[i].transform.Find("Item Image").gameObject;
-                itemSlot.SetActive(true);
-                itemSlot.GetComponent<Image>().sprite = itemToAdd.sprite;
-
-                // to synchronize with the server
-                CmdTellServerIGotANewItem(itemID);
-
-                return;
-            }
-        }
-
-
-    }
-
-    // Drop the number index item
-    public void DropItem(int index)
-    {
-        Item itemToRemove = items[index];
-
-        if (itemToRemove == null)
-        {
-            Debug.Log("Invalid id for item");
-            return;
-        }
-
-        // Security check useless
-        if (!listOfItemsID.Contains(itemToRemove.id))
-        {
-            return;
-        }
-
-        for (int i = 0; i < items.Length; i++)
-        {
-            if (items[i] == itemToRemove)
-            {
-
-                // We need to add the display to the inventory
-                GameObject itemSlot = itemSlots[i].transform.Find("Item Image").gameObject;
-                itemSlot.SetActive(false);
-                itemSlot.GetComponent<Image>().sprite = null;
-
-                CmdDropItem(itemToRemove.id);
-
-                // to synchronize with the server
-                CmdTellServerIRemovedAnItem(itemToRemove.id);
-
-                items[i] = null;
-
-                return;
+                Item it = allItemSlots[index].theItem;
+                allItemSlots[index].theItem = null;
+                //Spawn item
+                CmdDropItem(it.id);
+                UpdateItemSlots();
             }
         }
     }
 
     [Command]
-    void CmdDropItem(int itemID)
+    private void CmdDropItem(int id)
     {
-       
-        // Create the item from the item prefab
-        var itemToDrop = (GameObject)Instantiate(
-             itemManager.allExistingItems[itemID].itemObject,
-           dropPoint);
-
-        // Spawn the item dropped on the Clients
-        itemToDrop.transform.parent = null;
-
-        NetworkServer.Spawn(itemToDrop);
+        DropItem(id);
+        listOfItemsID.Remove(id);
     }
 
-    // Drop the number index item
-    public void RemoveItem(int index)
+    // Sub method
+    private void DropItem(int itemID)
     {
-        Item itemToRemove = items[index];
+        var dropItem = (GameObject)Instantiate(
+           ItemManager.getItemById(itemID).itemObject,
+           dropPoint);
 
-        if (itemToRemove == null)
-        {
-            Debug.Log("Invalid id for item");
-            return;
-        }
+        dropItem.transform.parent = null;
 
-        // Security check useless
-        if (!listOfItemsID.Contains(itemToRemove.id))
-        {
-            return;
-        }
+        NetworkServer.Spawn(dropItem);
+    }
 
-        for (int i = 0; i < items.Length; i++)
+    private void UpdateItemSlots()
+    {
+        foreach(ItemSlot itslot in allItemSlots)
         {
-            if (items[i] == itemToRemove)
+            if(itslot.theItem == null)
             {
-                items[i] = null;
-
-                // We need to add the display to the inventory
-                GameObject itemSlot = itemSlots[i].transform.Find("Item Image").gameObject;
-                itemSlot.SetActive(false);
-                itemSlot.GetComponent<Image>().sprite = null;
-
-                // to synchronize with the server
-                CmdTellServerIRemovedAnItem(itemToRemove.id);
-
-                return;
+                GameObject img = itslot.transform.Find("Item Image").gameObject;
+                img.SetActive(false);
+                img.GetComponent<Image>().sprite = null;
+            } else
+            {
+                Item it = itslot.theItem;
+                GameObject img = itslot.transform.Find("Item Image").gameObject;
+                img.SetActive(true);
+                img.GetComponent<Image>().sprite = it.sprite;
             }
         }
     }
+
+
+    public bool HasFreeSpace()
+    {
+        return listOfItemsID.Count < numItemSlots;
+    }
+
+    public bool HasItemById(int id)
+    {
+        return listOfItemsID.Contains(id);
+    }
+
 
 }

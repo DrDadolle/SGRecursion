@@ -60,7 +60,7 @@ public class PlayerController : NetworkBehaviour
         // GrabItem Inventory
         if (Input.GetKeyDown(KeyCode.I) && canBuyItem)
         {
-            inv.AddItem(buyableItem.id);
+            inv.AddItemAction(buyableItem.id);
         }
 
         // Time Machine
@@ -69,7 +69,7 @@ public class PlayerController : NetworkBehaviour
             // Upgrade the TM
             if (tm.canBeUpgraded && Input.GetKeyDown(KeyCode.T) && useableItemID != -1)
             {
-                inv.RemoveItem(inv.GetIndexOfItemById(useableItemID));
+                inv.RemoveItemAction(useableItemID);
                 useableItemID = -1;
                 CmdUpgradeTimeMachine();
             } 
@@ -85,13 +85,13 @@ public class PlayerController : NetworkBehaviour
         // Remove object from inventory slot 1
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            inv.DropItem(0);
+             inv.DropItemAction(0);
         }
 
         // Remove object from inventory slot 2
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            inv.DropItem(1);
+             inv.DropItemAction(1);
         }
 
 

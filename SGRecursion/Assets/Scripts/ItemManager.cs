@@ -5,7 +5,7 @@ using UnityEngine;
 public class ItemManager : MonoBehaviour {
 
     // For now : contains only a list of all items
-    public Dictionary<int, Item> allExistingItems = new Dictionary<int, Item>();
+    private static Dictionary<int, Item> allExistingItems = new Dictionary<int, Item>();
 
     public Item[] itemTest = new Item[2];
 
@@ -16,5 +16,22 @@ public class ItemManager : MonoBehaviour {
             allExistingItems.Add(it.id, it);
         }
       
+    }
+
+    public static Item getItemById(int id)
+    {
+        return allExistingItems[id];
+    }
+
+    public static int getItemIdFromGO(GameObject go)
+    {
+        foreach(Item it in allExistingItems.Values)
+        {
+            if((it.itemObject.name + "(Clone)").Equals(go.name)){
+                return it.id;
+            }
+        }
+
+        return -1;
     }
 }

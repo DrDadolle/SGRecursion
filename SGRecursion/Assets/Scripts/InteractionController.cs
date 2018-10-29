@@ -42,7 +42,8 @@ public class InteractionController : MonoBehaviour
             case "PickupObject":
                 if (Input.GetKeyDown(KeyCode.E) && playerController.inv.HasFreeSpace())
                 {
-                    playerController.inv.AddItem(other.gameObject);
+                    Debug.Log("PICKING UP the GO : " + other.gameObject);
+                    playerController.inv.AddItemAction(ItemManager.getItemIdFromGO(other.gameObject));
                     playerController.CmdDeleteObject(other.gameObject.GetComponent<NetworkIdentity>().netId);
                 }
                 break;
