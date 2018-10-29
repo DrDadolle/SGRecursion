@@ -4,6 +4,7 @@
 //-------------------------------------
 using UnityEngine;
 using UnityEngine.Networking;
+[RequireComponent(typeof(Player))]
 public class PlayerSetup : NetworkBehaviour
 {
     [SerializeField]
@@ -14,13 +15,18 @@ public class PlayerSetup : NetworkBehaviour
     public Transform camPlace;
 
 
-    public override void OnStartLocalPlayer()
+    public override void OnStartClient()
     {
         GetComponent<MeshRenderer>().material.color = Color.blue;
         Camera.main.transform.parent = camPlace;
         Camera.main.transform.position = camPlace.position;
         GameObject hudPlayer = GameObject.FindGameObjectWithTag("HUDPlayer");
         hudPlayer.transform.parent = this.transform;
+
+
+        string _netID = GetComponent<NetworkIdentity>().netId.ToString();
+        Player _player = GetComponent<Player>();
+        GameManager.RegisterPlayer(_netID, _player);
 
     }
 
@@ -40,6 +46,6 @@ public class PlayerSetup : NetworkBehaviour
     // When we are destroyed
     void OnDisable()
     {
-
+        GameManager.UnRegisterPlayer(transform.name);
     }
 }
